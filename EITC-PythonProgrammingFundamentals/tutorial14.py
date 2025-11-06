@@ -2,7 +2,7 @@ import itertools
 
 
 def check_three_in_a_row(row_elems):
-    if (row_elems.count(row_elems[0]) == len(row_elems)) and row_elems[0] != 0:
+    if (row_elems.count(row_elems[0]) == len(row_elems)) and row_elems[0] != '-':
         return row_elems[0]
     return 0
 
@@ -40,7 +40,7 @@ def winner(game):
 
 def show_game_board(player=0, row=0, col=0, just_display=True):
     try:
-        if game[row][col] != 0:
+        if game[row][col] != '-':
             print(
                 f"Position {row} {col} aleady occupied, please choose another one.")
             return game, False
@@ -87,18 +87,24 @@ def print_win_message(winner_player, dir, index):
 play = True
 players = [1, 2]
 player_choice = itertools.cycle(players)
-scores = {players[0]: 0, players[1]: 0}
 
 
 def show_scores():
-    print(f"PLAYER1 : {scores[players[0]]} - PLAYER2 : {scores[players[1]]}")
-
+    print(30*'*')
+    print(f"PLAYER {players[0]} : {scores[players[0]]} - PLAYER {players[1]} : {scores[players[1]]}")
+    print(30*'*')
+    
 def update_scores(player):
     scores[player]+=1
 
 game_size =0
 try:
     game_size = int(input("Insert the size of the game board: "))
+    players[0] = input("Choose symbol for the first player: ")
+    players[1] = input("Choose symbol for the second player: ")
+
+    scores = {players[0]: 0, players[1]: 0}
+
 except ValueError as e:
     print("Invalid game size,switching to default")
     game_size = 3
@@ -106,7 +112,7 @@ except ValueError as e:
 while play:
 
     show_scores()
-    game = [[0 for i in range(game_size)] for i in range(game_size)]
+    game = [['-' for i in range(game_size)] for i in range(game_size)]
     cur_player = next(player_choice)
     winner_player, dir, index = (0,'n',0)
 
