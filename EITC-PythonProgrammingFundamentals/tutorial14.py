@@ -85,11 +85,21 @@ play = True
 players = [1, 2]
 player_choice = itertools.cycle(players)
 while play:
+    game_size =0
+    try:
+        game_size = int(input("Insert the size of the game board: "))
+    except ValueError as e:
+        print("Invalid game size,switching to default")
+        game_size = 3
+
+    game = [[0 for i in range(game_size)] for i in range(game_size)]
+
     cur_player = next(player_choice)
+    '''
     game = [[0, 0, 0],
             [0, 0, 0],
             [0, 0, 0]]
-
+'''
     winner_player, dir, index = (0,'n',0)
 
     played = False
@@ -100,8 +110,8 @@ while play:
         played = False
         while played == False:
             try:
-                col_choice = int(input(str(cur_player)+"> Select a column (0-2): "))
-                row_choice = int(input(str(cur_player)+"> Select a row (0-2): "))
+                col_choice = int(input(str(cur_player)+f"> Select a column (0-{game_size-1}): "))
+                row_choice = int(input(str(cur_player)+f"> Select a row (0-{game_size-1}): "))
                 game,played = show_game_board(cur_player,row_choice,col_choice,just_display=False)
             except ValueError as e:
                 print("Please insert a valid choice.")
