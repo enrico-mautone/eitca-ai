@@ -48,7 +48,8 @@ def show_game_board(player=0, row=0, col=0, just_display=True):
             game[row][col] = player
 
         print("*" * 30)
-        print("   a  b  c")
+        print("   "+"  ".join([str(i) for i in range(game_size)]))
+
         for count, row in enumerate(game):
             print(count, row)
             # count +=1
