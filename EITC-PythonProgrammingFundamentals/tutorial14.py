@@ -1,5 +1,6 @@
 import itertools
 
+
 def check_three_in_a_row(row_elems):
     if (row_elems.count(row_elems[0]) == len(row_elems)) and row_elems[0] != 0:
         return row_elems[0]
@@ -40,8 +41,9 @@ def winner(game):
 def show_game_board(player=0, row=0, col=0, just_display=True):
     try:
         if game[row][col] != 0:
-            print(f"Position {row} {col} aleady occupied, please choose another one.")
-            return game,False
+            print(
+                f"Position {row} {col} aleady occupied, please choose another one.")
+            return game, False
         if just_display == False:
             game[row][col] = player
 
@@ -52,17 +54,17 @@ def show_game_board(player=0, row=0, col=0, just_display=True):
             # count +=1
         print("*" * 30)
 
-        return game,not just_display
+        return game, not just_display
 
     except IndexError as e:
         print("You must enter row and columns in the range 0-2", e)
-        return game,False
+        return game, False
     except NameError as e:
         print(e)
-        return game,False
+        return game, False
     except Exception as e:
         print(e)
-        return game,False
+        return game, False
 
 
 def print_win_message(winner_player, dir, index):
@@ -84,22 +86,27 @@ def print_win_message(winner_player, dir, index):
 play = True
 players = [1, 2]
 player_choice = itertools.cycle(players)
+scores = {players[0]: 0, players[1]: 0}
+
+
+def show_scores():
+    print(f"PLAYER1 : {scores[players[0]]} - PLAYER2 : {scores[players[1]]}")
+
+def update_scores(player):
+    scores[player]+=1
+
+game_size =0
+try:
+    game_size = int(input("Insert the size of the game board: "))
+except ValueError as e:
+    print("Invalid game size,switching to default")
+    game_size = 3
+
 while play:
-    game_size =0
-    try:
-        game_size = int(input("Insert the size of the game board: "))
-    except ValueError as e:
-        print("Invalid game size,switching to default")
-        game_size = 3
 
+    show_scores()
     game = [[0 for i in range(game_size)] for i in range(game_size)]
-
     cur_player = next(player_choice)
-    '''
-    game = [[0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0]]
-'''
     winner_player, dir, index = (0,'n',0)
 
     played = False
@@ -121,6 +128,8 @@ while play:
             break
         cur_player = next(player_choice)
 
+    
+    update_scores(winner_player)
     print(print_win_message(winner_player, dir, index))
 
     end_game_choice = input("Do you want to play again? (y/n)")
